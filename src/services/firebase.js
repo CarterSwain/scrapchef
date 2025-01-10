@@ -1,11 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyA9WyqA3IXRpBqSLrxZnOsK59F9XyeAOPE",
   authDomain: "scrapchef.firebaseapp.com",
@@ -19,3 +17,35 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const auth = getAuth(app);
+
+// Set up Google Auth Provider
+const provider = new GoogleAuthProvider();
+
+// Function to sign in with Google
+const signInWithGoogle = () => {
+  return signInWithPopup(auth, provider)
+    .then((result) => {
+      const user = result.user;
+      console.log('User logged in: ', user);
+      return user; // You can return user details here
+    })
+    .catch((error) => {
+      console.error("Error signing in with Google: ", error);
+      throw error;
+    });
+};
+
+// Function to sign out
+const logOut = () => {
+  return signOut(auth)
+    .then(() => {
+      console.log("User signed out");
+    })
+    .catch((error) => {
+      console.error("Error signing out: ", error);
+      throw error;
+    });
+};
+
+export { signInWithGoogle, logOut, auth };
