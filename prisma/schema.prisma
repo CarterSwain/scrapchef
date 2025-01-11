@@ -14,9 +14,11 @@ generator client {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  createdAt DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String   @unique
+  createdAt   DateTime @default(now())
+  diet        String?  // Stores the diet selection (e.g., Vegan, Vegetarian, etc.)
+  allergies   String[] // Stores avoided ingredients as an array of strings
 }
 

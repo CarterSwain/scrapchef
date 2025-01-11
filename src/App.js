@@ -5,7 +5,7 @@ import LoginButton from './components/LoginButton';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { logOut } from './services/firebase';
 import backgroundImage from './assets/scrapchefBGImage.png';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';  // Updated imports
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Diet from './pages/DietPage.js'; // Import Diet page
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
   return (
     <Router>
       <div
-        className="App min-h-screen flex flex-col justify-center items-center text-white"
+        className="App min-h-screen flex flex-col justify-center items-center text-black"
         style={{
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
@@ -30,35 +30,42 @@ function App() {
           backgroundAttachment: 'fixed',
         }}
       >
-        <Routes>  {/* Use Routes instead of Switch */}
-          <Route path="/" element={
-            <header className="App-header text-center p-6 max-w-md w-full bg-black bg-opacity-50 rounded-lg">
-              <h1 className="text-4xl font-bold mb-4 text-yellow-400">Welcome to ScrapChef!</h1>
-              {user ? (
-                <div>
-                  <p className="mb-4 text-lg text-white">Welcome, {user.displayName}</p>
-                  <button
-                    onClick={logOut}
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300"
-                  >
-                    Sign out
-                  </button>
-                  {/* Navigate logged-in users to the Diet page */}
-                  <Navigate to="/diet" />
-                </div>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <header className="App-header text-center p-6 max-w-md w-full bg-yellow-200 bg-opacity-90 rounded-lg">
+                <h1 className="text-5xl font-bold text-black mb-2">ScrapChef</h1>
+                <p className="text-lg font-medium text-gray-700 mb-8">Waste less, feast more.</p>
+                {user ? (
+                  <div>
+                    <p className="mb-4 text-lg text-black">Welcome, {user.displayName}</p>
+                    <button
+                      onClick={logOut}
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+                    >
+                      Sign out
+                    </button>
+                    <Navigate to="/diet" />
+                  </div>
+                ) : (
+                  <div className="bg-white rounded-md p-4 shadow-lg border border-gray-300">
+                    <LoginButton />
+                  </div>
+                )}
+              </header>
+            }
+          />
+          <Route
+            path="/diet"
+            element={
+              user ? (
+                <Diet />
               ) : (
-                <LoginButton />
-              )}
-            </header>
-          } />
-          
-          <Route path="/diet" element={
-            user ? (
-              <Diet />
-            ) : (
-              <Navigate to="/" />  
-            )
-          } />
+                <Navigate to="/" />
+              )
+            }
+          />
         </Routes>
       </div>
     </Router>
@@ -66,6 +73,7 @@ function App() {
 }
 
 export default App;
+
 
 
 

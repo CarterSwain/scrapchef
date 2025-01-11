@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { logOut } from '../services/firebase'; // Adjust the import path as needed
 
 function DietPage() {
   const [selectedDiet, setSelectedDiet] = useState('');
@@ -8,49 +9,54 @@ function DietPage() {
   };
 
   return (
-    <div className="diet-page min-h-screen flex flex-col items-center justify-center bg-gray-100 text-black">
-      <h1 className="text-3xl font-bold mb-6">Choose Your Diet</h1>
-      <div className="diet-options space-y-4">
+    <div className="diet-page min-h-screen flex flex-col items-center text-black relative">
+      {/* Log Out Button */}
+      <button
+        onClick={logOut}
+        className="absolute top-4 right-4 px-4 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-700 transition duration-300"
+      >
+        Log Out
+      </button>
+
+      {/* Title */}
+      <h1 className="text-4xl font-bold mb-8 mt-16">What is your diet?</h1>
+
+      {/* Diet Options */}
+      <div className="diet-options grid grid-cols-2 gap-6 sm:grid-cols-4">
         <button
-          className="diet-option px-6 py-3 bg-green-500 text-white rounded-lg"
           onClick={() => handleDietSelection('Vegan')}
+          className="diet-option bg-white rounded-lg shadow-md flex flex-col items-center p-4 hover:shadow-lg transition"
         >
-          Vegan
+          <img src="/path-to-vegan-icon.png" alt="Vegan" className="w-12 h-12 mb-2" />
+          <span className="font-medium">Vegan</span>
         </button>
         <button
-          className="diet-option px-6 py-3 bg-blue-500 text-white rounded-lg"
-          onClick={() => handleDietSelection('Keto')}
-        >
-          Keto
-        </button>
-        <button
-          className="diet-option px-6 py-3 bg-red-500 text-white rounded-lg"
-          onClick={() => handleDietSelection('Paleo')}
-        >
-          Paleo
-        </button>
-        <button
-          className="diet-option px-6 py-3 bg-yellow-500 text-white rounded-lg"
           onClick={() => handleDietSelection('Vegetarian')}
+          className="diet-option bg-white rounded-lg shadow-md flex flex-col items-center p-4 hover:shadow-lg transition"
         >
-          Vegetarian
+          <img src="/path-to-vegetarian-icon.png" alt="Vegetarian" className="w-12 h-12 mb-2" />
+          <span className="font-medium">Vegetarian</span>
         </button>
         <button
-          className="diet-option px-6 py-3 bg-black text-white rounded-lg"
           onClick={() => handleDietSelection('Pescatarian')}
+          className="diet-option bg-white rounded-lg shadow-md flex flex-col items-center p-4 hover:shadow-lg transition"
         >
-          Pescatarian
+          <img src="/path-to-pescatarian-icon.png" alt="Pescatarian" className="w-12 h-12 mb-2" />
+          <span className="font-medium">Pescatarian</span>
         </button>
         <button
-          className="diet-option px-6 py-3 bg-green-500 text-white rounded-lg"
-          onClick={() => handleDietSelection('No Strict Diet')}
+          onClick={() => handleDietSelection('Omnivore')}
+          className="diet-option bg-white rounded-lg shadow-md flex flex-col items-center p-4 hover:shadow-lg transition"
         >
-          No Strict Diet
+          <img src="/path-to-omnivore-icon.png" alt="Omnivore" className="w-12 h-12 mb-2" />
+          <span className="font-medium">Omnivore</span>
         </button>
       </div>
+
+      {/* Selected Diet */}
       {selectedDiet && (
-        <div className="diet-selected mt-6">
-          <p className="text-xl font-semibold">You selected: {selectedDiet}</p>
+        <div className="mt-8 text-xl font-semibold">
+          <p>You selected: {selectedDiet}</p>
         </div>
       )}
     </div>
@@ -58,3 +64,5 @@ function DietPage() {
 }
 
 export default DietPage;
+
+
