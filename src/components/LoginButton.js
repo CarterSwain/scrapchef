@@ -1,6 +1,6 @@
 // src/components/LoginButton.js
 import React, { useState } from 'react';
-import { signInWithGoogle } from '../services/firebase';
+import { signInWithGoogle } from '../services/firebase.js';
 
 const LoginButton = () => {
   const [error, setError] = useState(null);

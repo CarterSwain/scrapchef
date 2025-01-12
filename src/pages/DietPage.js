@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { logOut } from '../services/firebase'; // Adjust the import path as needed
+import { logOut } from '../services/firebase.js'; // Adjust the import path as needed
 
 function DietPage() {
   const [selectedDiet, setSelectedDiet] = useState('');

@@ -13,12 +13,48 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  id          Int      @id @default(autoincrement())
-  name        String
-  email       String   @unique
-  createdAt   DateTime @default(now())
-  diet        String?  // Stores the diet selection (e.g., Vegan, Vegetarian, etc.)
-  allergies   String[] // Stores avoided ingredients as an array of strings
+enum Diet {
+  VEGAN
+  VEGETARIAN
+  OMNIVORE
+  PESCATARIAN
 }
 
+model User {
+  id          Int       @id @default(autoincrement())
+  name        String?   // Name is optional
+  email       String    @unique
+  createdAt   DateTime  @default(now())
+  uid         String    @unique
+  image       String?
+  accounts    Account[]
+  sessions    Session[]
+  diet        Diet?     @default(OMNIVORE) // Default diet is omnivore
+  allergies   String[]  @default([])       // Default to no allergies
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            Int
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade on delete
+  type              String
+  provider          String
+  providerAccountId String
+  refreshToken      String?
+  accessToken       String?
+  expiresAt         Int?
+  tokenType         String?
+  scope             String?
+  idToken           String?
+  sessionState      String?
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade on delete
+  expires      DateTime
+}

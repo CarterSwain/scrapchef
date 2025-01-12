@@ -1,22 +1,41 @@
-/*  // server.js (or your Express server file)
-const express = require('express');
-const { PrismaClient } = require('@prisma/client');
+import axios from 'axios';
 
-const prisma = new PrismaClient();
-const app = express();
-const port = 5000;
+// Save a new user (POST)
+export const saveUser = async (user) => {
+    try {
+        const response = await axios.post(
+            'http://localhost:4000/api/users',
+            {
+                email: user.email,
+                name: user.displayName,
+                image: user.photoURL,
+                uid: user.uid,
+            },
+            {
+                withCredentials: true,
+            }
+        );
+        console.log('User saved:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error saving user:', error);
+        throw error;
+    }
+};
 
-app.get('/api/users', async (req, res) => {
-  try {
-    const users = await prisma.user.findMany();
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ error: 'Something went wrong' });
-  }
-});
+// Check if user exists (GET)
+export const checkUserExists = async (uid) => {
+    try {
+        const response = await axios.get(`http://localhost:4000/api/users/${uid}`, {
+            withCredentials: true, // Optional, depending on your backend CORS config
+        });
+        console.log('User exists check:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error checking user existence:', error);
+        throw error;
+    }
+};
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
 
-*/
+  

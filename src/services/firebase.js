@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import axios from 'axios';  // Import axios to make HTTP requests
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -16,24 +17,31 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const auth = getAuth(app);
 
 // Set up Google Auth Provider
 const provider = new GoogleAuthProvider();
 
 // Function to sign in with Google
-const signInWithGoogle = () => {
-  return signInWithPopup(auth, provider)
-    .then((result) => {
-      const user = result.user;
-      console.log('User logged in: ', user);
-      return user; // You can return user details here
-    })
-    .catch((error) => {
-      console.error("Error signing in with Google: ", error);
-      throw error;
+const signInWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    // After successful login, send user data to your backend API
+    await axios.post('http://localhost:4000/api/users', {
+      email: user.email,
+      name: user.displayName,
+      image: user.photoURL,
+      uid: user.uid,
     });
+
+    console.log('User logged in and data saved:', user);
+    return user;
+  } catch (error) {
+    console.error("Error signing in with Google:", error.message);
+    throw error; // Rethrow error to be handled by the calling function
+  }
 };
 
 // Function to sign out
@@ -43,7 +51,7 @@ const logOut = () => {
       console.log("User signed out");
     })
     .catch((error) => {
-      console.error("Error signing out: ", error);
+      console.error("Error signing out:", error.message);
       throw error;
     });
 };
