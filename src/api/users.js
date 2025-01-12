@@ -4,7 +4,7 @@ import axios from 'axios';
 export const saveUser = async (user) => {
     try {
         const response = await axios.post(
-            'http://localhost:4000/api/users',
+            'http://localhost:5000/api/users',
             {
                 email: user.email,
                 name: user.displayName,
@@ -26,7 +26,7 @@ export const saveUser = async (user) => {
 // Check if user exists (GET)
 export const checkUserExists = async (uid) => {
     try {
-        const response = await axios.get(`http://localhost:4000/api/users/${uid}`, {
+        const response = await axios.get(`http://localhost:5000/api/users/${uid}`, {
             withCredentials: true, // Optional, depending on your backend CORS config
         });
         console.log('User exists check:', response.data);

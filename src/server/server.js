@@ -4,7 +4,7 @@ import userRoutes from './routes/userRoutes.js'; // Import the user routes
 import cors from 'cors';
 
 const app = express();
-const PORT = 4000;
+const PORT = 5000;
 
 // CORS configuration
 app.use(cors({

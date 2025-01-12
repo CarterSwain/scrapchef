@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import LogoutButton from '../components/LogoutButton.js'; // Ensure this import is correct
+
 
 const ProfilePage = ({ user }) => {
   const [preferences, setPreferences] = useState({ dietType: '', avoidedIngredients: [] });
@@ -37,7 +37,6 @@ const ProfilePage = ({ user }) => {
       {/* Header */}
       <div className="w-full flex justify-between items-center p-6 bg-yellow-300">
         <h1 className="text-4xl font-bold text-black">ScrapChef</h1>
-        <LogoutButton />
       </div>
 
       {/* User Info */}

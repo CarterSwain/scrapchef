@@ -22,33 +22,15 @@ function App() {
 
       if (currentUser) {
         try {
-          // Prevent navigation if already on the `/profile` route
+          // Check if user is already on the profile page
           if (location.pathname === '/profile') return;
 
-          // Check if user already exists in the database
-          const response = await axios.get(`http://localhost:4000/api/users/${currentUser.uid}`, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-
-          if (response.data.exists) {
-            console.log('User exists, redirecting to GenerateRecipePage...');
-            navigate('/generate-recipe'); // Redirect existing user to GenerateRecipePage
-          } else {
-            console.log('New user, redirecting to DietPage...');
-            // Save new user to the database
-            await axios.post('http://localhost:4000/api/users', {
-              email: currentUser.email,
-              name: currentUser.displayName,
-              image: currentUser.photoURL,
-              uid: currentUser.uid,
-            });
-            navigate('/diet'); // Redirect new user to DietPage
-          }
+          // Redirect logged-in users to the profile page
+          console.log('User logged in, redirecting to ProfilePage...');
+          navigate('/profile');
         } catch (error) {
-          console.error('Error checking or saving user:', error.response?.data || error.message);
-          alert('Failed to process user data. Please try again.');
+          console.error('Error processing user state:', error.message);
+          alert('An error occurred. Please try again.');
         }
       }
     });
