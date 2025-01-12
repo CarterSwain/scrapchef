@@ -1,4 +1,4 @@
-import prisma from "../../lib/prisma"; // Adjust path as necessary
+/*import prisma from "/schema.prisma"; // Adjust path as necessary
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
@@ -21,4 +21,4 @@ export default async function handler(req, res) {
   } else {
     res.status(405).json({ message: "Method not allowed" });
   }
-}
+}*/
