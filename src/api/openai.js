@@ -8,12 +8,12 @@ export const getRecipeFromIngredients = async (ingredients) => {
       ingredients, // Send ingredients as an array
     });
 
-    const recipe = response.data.recipe;
-    if (!recipe) {
-      throw new Error("No recipe generated. The response might be empty.");
+    const { recipeName, recipeDetails } = response.data;
+    if (!recipeName || !recipeDetails) {
+      throw new Error("Failed to generate recipe. The response is incomplete.");
     }
 
-    return recipe;
+    return { recipeName, recipeDetails };
   } catch (error) {
     console.error(
       "Error generating recipe:",

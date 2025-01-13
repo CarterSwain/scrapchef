@@ -41,7 +41,12 @@ router.post('/generate-recipe', async (req, res) => {
       return res.status(500).json({ error: 'Failed to generate recipe. The response is empty.' });
     }
 
-    res.status(200).json({ recipe });
+// Parse OpenAI's response to split into title and details
+const lines = recipe.split("\n");
+const recipeName = lines[0] || "Unnamed Recipe";
+const recipeDetails = lines.slice(1).join("\n");
+
+    res.status(200).json({ recipeName, recipeDetails });
   } catch (error) {
     console.error('Error generating recipe:', error.message);
     res.status(500).json({ error: 'An error occurred while generating the recipe.' });
@@ -49,3 +54,4 @@ router.post('/generate-recipe', async (req, res) => {
 });
 
 export default router;
+
