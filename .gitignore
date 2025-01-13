@@ -1,6 +1,6 @@
 #Google Firebase
 
-src/firebase.js
+src/services/firebase.js
 
 # Logs
 logs
