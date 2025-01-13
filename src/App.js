@@ -113,7 +113,7 @@ function App() {
           path="/generate-recipe"
           element={
             user ? (
-              <GenerateRecipePage />
+              <GenerateRecipePage user={user} />
             ) : (
               <Navigate to="/" />
             )

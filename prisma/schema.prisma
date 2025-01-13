@@ -20,6 +20,15 @@ enum Diet {
   PESCATARIAN
 }
 
+model Recipe {
+  id          Int      @id @default(autoincrement())
+  name        String   // Name of the recipe
+  details     String   // Recipe details or instructions
+  createdAt   DateTime @default(now())
+  userId      Int      // Foreign key to the User model
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Relates Recipe to User
+}
+
 model User {
   id          Int       @id @default(autoincrement())
   name        String?   // Name is optional
@@ -31,6 +40,7 @@ model User {
   sessions    Session[]
   diet        Diet?     @default(OMNIVORE) // Default diet is omnivore
   allergies   String[]  @default([])       // Default to no allergies
+  recipes     Recipe[]  // Relation to the Recipe model
 }
 
 model Account {

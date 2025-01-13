@@ -73,4 +73,30 @@ router.post('/users', async (req, res) => {
   }
 });
 
+router.post('/save-recipe', async (req, res) => {
+  const { userId, recipeName, recipeDetails } = req.body;
+
+  if (!userId || !recipeName || !recipeDetails) {
+    return res.status(400).json({ error: 'All fields are required.' });
+  }
+
+  try {
+    const savedRecipe = await prisma.recipe.create({
+      data: {
+        name: recipeName,
+        details: recipeDetails,
+        user: {
+          connect: { uid: userId },
+        },
+      },
+    });
+
+    res.status(200).json({ message: 'Recipe saved successfully.', recipe: savedRecipe });
+  } catch (error) {
+    console.error('Error saving recipe:', error.message);
+    res.status(500).json({ error: 'Failed to save recipe.' });
+  }
+});
+
+
 export default router;

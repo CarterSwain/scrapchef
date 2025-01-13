@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { getRecipeFromIngredients } from "../api/openai.js";
 import RecipeDisplay from "../components/RecipeDisplay.js";
 
-const GenerateRecipePage = () => {
+const GenerateRecipePage = ({user}) => {
   const [ingredients, setIngredients] = useState("");
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -50,7 +50,8 @@ const GenerateRecipePage = () => {
       </div>
 
       {/* Recipe Display */}
-      <RecipeDisplay recipe={recipe} loading={loading} error={error} />
+      <RecipeDisplay recipe={recipe} loading={loading} error={error} userId={user.uid} />
+
     </div>
   );
 };
