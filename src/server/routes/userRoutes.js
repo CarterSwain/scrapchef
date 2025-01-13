@@ -73,6 +73,7 @@ router.post('/users', async (req, res) => {
   }
 });
 
+//Save recipe
 router.post('/save-recipe', async (req, res) => {
   const { userId, recipeName, recipeDetails } = req.body;
 
@@ -95,6 +96,53 @@ router.post('/save-recipe', async (req, res) => {
   } catch (error) {
     console.error('Error saving recipe:', error.message);
     res.status(500).json({ error: 'Failed to save recipe.' });
+  }
+});
+
+// GET: Fetch recipes for a specific user
+router.get('/users/:uid/recipes', async (req, res) => {
+  const { uid } = req.params;
+
+  try {
+    const recipes = await prisma.recipe.findMany({
+      where: {
+        user: {
+          uid, // Match the user by UID
+        },
+      },
+    });
+
+    res.status(200).json({ recipes });
+  } catch (error) {
+    console.error('Error fetching recipes:', error.message);
+    res.status(500).json({ error: 'Failed to fetch recipes.' });
+  }
+});
+
+// DELETE: Delete a specific recipe for a user
+router.delete('/users/:uid/recipes/:recipeId', async (req, res) => {
+  const { uid, recipeId } = req.params;
+
+  try {
+    // Ensure the recipe belongs to the user
+    const recipe = await prisma.recipe.findUnique({
+      where: { id: parseInt(recipeId) },
+      include: { user: true },
+    });
+
+    if (!recipe || recipe.user.uid !== uid) {
+      return res.status(404).json({ error: 'Recipe not found or does not belong to the user.' });
+    }
+
+    // Delete the recipe
+    await prisma.recipe.delete({
+      where: { id: parseInt(recipeId) },
+    });
+
+    res.status(200).json({ message: 'Recipe deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting recipe:', error.message);
+    res.status(500).json({ error: 'Failed to delete recipe.' });
   }
 });
 
