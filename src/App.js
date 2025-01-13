@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './styles/App.css'; // Assuming this has the background styles now
 import LoginButton from './components/LoginButton.js';
-import LogoutButton from './components/LogoutButton.js'; // Import the LogoutButton
-import ProfilePageButton from './components/ProfilePageButton.js'; // Import the ProfilePageButton
+import LogoutButton from './components/LogoutButton.js';
+import ProfilePageButton from './components/ProfilePageButton.js';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import Diet from './pages/DietPage.js';
+import DietPage from './pages/DietPage.js';
+import AllergyPage from './pages/AllergyPage.js';
 import GenerateRecipePage from './pages/GenerateRecipePage.js';
 import ProfilePage from './pages/ProfilePage.js';
 
@@ -19,24 +20,38 @@ function App() {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
-
+  
       if (currentUser) {
         try {
-          // Check if user is already on the profile page
-          if (location.pathname === '/profile') return;
-
-          // Redirect logged-in users to the profile page
-          console.log('User logged in, redirecting to ProfilePage...');
-          navigate('/profile');
+          // Check if user already exists in the database
+          const response = await axios.get(`http://localhost:5001/api/users/${currentUser.uid}`, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+  
+          if (!response.data.exists) {
+            console.log('New user detected, redirecting to profile setup...');
+            navigate('/diet');
+          } else {
+            console.log('Existing user detected.');
+            if (location.pathname === '/profile' || location.pathname === '/generate-recipe') {
+              console.log(`Staying on the current page: ${location.pathname}`);
+              return; // Do not navigate if already on the desired page
+            }
+            console.log('Navigating to profile page...');
+            navigate('/profile');
+          }
         } catch (error) {
-          console.error('Error processing user state:', error.message);
-          alert('An error occurred. Please try again.');
+          console.error('Error checking or saving user:', error.response?.data || error.message);
+          alert('An error occurred while processing user data. Please try again.');
         }
       }
     });
-
+  
     return () => unsubscribe();
   }, [navigate, location.pathname]);
+  
 
   return (
     <div className="App app-background min-h-screen flex flex-col justify-center items-center text-black relative">
@@ -78,7 +93,17 @@ function App() {
           path="/diet"
           element={
             user ? (
-              <Diet />
+              <DietPage />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route
+          path="/avoided-ingredients"
+          element={
+            user ? (
+              <AllergyPage />
             ) : (
               <Navigate to="/" />
             )
@@ -100,7 +125,6 @@ function App() {
             user ? (
               <ProfilePage
                 user={user}
-                preferences={{ dietType: 'Vegan', avoidedIngredients: 'Nuts, Dairy' }}
                 recipes={[]} // Pass an array of recipes
               />
             ) : (

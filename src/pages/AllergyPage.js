@@ -1,103 +1,77 @@
-import React, { useState } from "react";
-import { useRouter } from "next/router";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-function AllergyPage() {
+const AllergyPage = ({ user }) => {
   const [allergies, setAllergies] = useState([]);
-  const [inputValue, setInputValue] = useState("");
-  const router = useRouter();
+  const navigate = useNavigate(); // Correct library for React Router
 
-  // Handles adding a new allergy
-  const handleAddAllergy = () => {
-    if (inputValue.trim() && !allergies.includes(inputValue.trim())) {
-      setAllergies([...allergies, inputValue.trim()]);
-      setInputValue(""); // Clear the input field
+  const handleAddAllergy = (event) => {
+    if (event.key === 'Enter' && event.target.value.trim() !== '') {
+      setAllergies([...allergies, event.target.value.trim()]);
+      event.target.value = '';
     }
   };
 
-  // Handles removing an allergy
-  const handleRemoveAllergy = (item) => {
-    setAllergies(allergies.filter((allergy) => allergy !== item));
+  const handleRemoveAllergy = (allergyToRemove) => {
+    setAllergies(allergies.filter((allergy) => allergy !== allergyToRemove));
   };
 
-  // Handles saving data to the database
-  const handleSave = async () => {
-    const { diet } = router.query; // Get the diet from the query params
+  const handleSubmit = async () => {
     try {
-      const response = await fetch("/api/saveUserPreferences", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ diet, allergies }),
+      await axios.put(`http://localhost:5001/api/users/${user.uid}`, {
+        allergies,
       });
 
-      if (response.ok) {
-        router.push("/dashboard"); // Redirect to the dashboard or home
-      } else {
-        console.error("Failed to save user preferences.");
-      }
+      // Navigate to profile page after submission
+      navigate('/profile');
     } catch (error) {
-      console.error("Error saving user preferences:", error);
+      console.error('Error saving allergies:', error.message);
+      alert('Failed to save allergies. Please try again.');
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-yellow-300 text-black py-8 px-4">
-      {/* Title */}
-      <h1 className="text-4xl font-bold mb-8">Add allergies or ingredients you avoid.</h1>
+    <div className="min-h-screen bg-yellow-400 flex flex-col justify-center items-center">
+      <h1 className="text-4xl font-bold text-black mb-4">Avoided Ingredients</h1>
+      <p className="text-lg text-gray-800 mb-6">
+        Add the ingredients you wish to avoid.
+      </p>
 
-      {/* Input Field */}
-      <div className="flex items-center gap-2 mb-4">
+      <div className="w-96">
         <input
           type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          placeholder="ex. Gluten, Egg, Pork, Salt..."
-          className="w-64 p-2 border rounded-md text-black"
+          placeholder="Enter an ingredient..."
+          onKeyDown={handleAddAllergy}
+          className="w-full px-4 py-2 mb-4 text-lg border border-gray-400 rounded shadow focus:outline-none focus:ring-2 focus:ring-yellow-600"
         />
-        <button
-          onClick={handleAddAllergy}
-          className="p-2 bg-black text-white rounded-full hover:bg-gray-800"
-        >
-          +
-        </button>
-      </div>
 
-      {/* Allergy Tags */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        {allergies.map((item, index) => (
-          <div
-            key={index}
-            className="flex items-center bg-white text-black px-4 py-1 rounded-full shadow"
-          >
-            {item}
-            <button
-              onClick={() => handleRemoveAllergy(item)}
-              className="ml-2 text-red-500 hover:text-red-700"
+        <ul className="list-disc list-inside bg-white p-4 rounded shadow">
+          {allergies.map((allergy, index) => (
+            <li
+              key={index}
+              className="flex justify-between items-center mb-2 text-lg"
             >
-              ✕
-            </button>
-          </div>
-        ))}
+              <span>{allergy}</span>
+              <button
+                onClick={() => handleRemoveAllergy(allergy)}
+                className="text-red-500 hover:underline"
+              >
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      {/* Save Button */}
       <button
-        onClick={handleSave}
-        className="px-6 py-2 bg-green-500 text-white font-medium rounded-lg shadow hover:bg-green-700"
+        onClick={handleSubmit}
+        className="mt-6 px-6 py-3 bg-green-500 text-white font-bold rounded shadow hover:bg-green-700 transition"
       >
-        Save Preferences
-      </button>
-
-      {/* Skip Button */}
-      <button
-        onClick={() => router.push("/dashboard")}
-        className="mt-4 text-blue-600 underline hover:text-blue-800"
-      >
-        Skip
+        Save and Continue
       </button>
     </div>
   );
-}
+};
 
 export default AllergyPage;

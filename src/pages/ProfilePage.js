@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
+import GenerateRecipePageButton from '../components/GenerateRecipePageButton.js'; 
+import axios from 'axios';
 
 const ProfilePage = ({ user }) => {
   const [preferences, setPreferences] = useState({ dietType: '', avoidedIngredients: [] });
-  const [recipes, setRecipes] = useState([]); // Add recipe fetching logic as needed
+  const [recipes, setRecipes] = useState([]);
+  const navigate = useNavigate(); // React Router navigation
 
   useEffect(() => {
     const fetchUserPreferences = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/api/users/${user.uid}`, {
+        const response = await axios.get(`http://localhost:5001/api/users/${user.uid}`, {
           headers: {
             'Content-Type': 'application/json',
           },
         });
-        const userData = await response.json();
+        
+        console.log('User data fetched:', response.data); // Debugging log
+
+        const userData = response.data;
 
         // Set user preferences from the database
         if (userData) {
@@ -23,7 +29,8 @@ const ProfilePage = ({ user }) => {
           });
         }
       } catch (error) {
-        console.error('Error fetching user preferences:', error);
+        console.error('Error fetching user preferences:', error.message);
+        console.error('Full error response:', error.response?.data); // More detailed error log
       }
     };
 
@@ -84,12 +91,7 @@ const ProfilePage = ({ user }) => {
       </div>
 
       {/* Generate New Recipe Button */}
-      <button
-        onClick={() => window.location.assign('/generate-recipe')}
-        className="mt-8 bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
-      >
-        Generate New Recipe
-      </button>
+      <GenerateRecipePageButton /> {/* Add the button here */}
     </div>
   );
 };
