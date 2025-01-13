@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { getRecipeFromIngredients } from "../api/openai.js";
+import RecipeDisplay from "../components/RecipeDisplay.js";
 
 const GenerateRecipePage = () => {
   const [ingredients, setIngredients] = useState("");
@@ -48,22 +49,10 @@ const GenerateRecipePage = () => {
         </button>
       </div>
 
-      {/* Loading Indicator */}
-      {loading && <p className="text-lg font-medium text-gray-800">Generating recipe...</p>}
-
-      {/* Error Message */}
-      {error && <p className="text-lg font-medium text-red-500">{error}</p>}
-
-      {/* Recipe Output */}
-      {recipe && (
-        <div className="mt-8 p-4 bg-white text-black rounded-lg shadow-lg max-w-xl">
-          <h3 className="text-2xl font-bold mb-4">Generated Recipe:</h3>
-          <p className="text-lg">{recipe}</p>
-        </div>
-      )}
+      {/* Recipe Display */}
+      <RecipeDisplay recipe={recipe} loading={loading} error={error} />
     </div>
   );
 };
 
 export default GenerateRecipePage;
-
