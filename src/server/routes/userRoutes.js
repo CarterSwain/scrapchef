@@ -167,5 +167,27 @@ router.put('/users/:uid/preferences', async (req, res) => {
   }
 });
 
+// PUT: Update user preferences
+router.put('/users/:uid/preferences', async (req, res) => {
+  const { uid } = req.params;
+  const { diet, allergies } = req.body;
+
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { uid },
+      data: {
+        diet,
+        allergies,
+      },
+    });
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error('Error updating preferences:', error.message);
+    res.status(500).json({ error: 'Failed to update preferences.' });
+  }
+});
+
+
 
 export default router;

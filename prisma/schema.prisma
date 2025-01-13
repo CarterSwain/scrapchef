@@ -20,33 +20,40 @@ enum Diet {
   PESCATARIAN
 }
 
+model Preferences {
+  id        Int      @id @default(autoincrement())
+  diet      Diet?    @default(OMNIVORE) // Default diet is omnivore
+  allergies String[] @default([]) // Default to no allergies
+  userId    Int      @unique // Ensures one-to-one relationship
+  user      User     @relation(fields: [userId], references: [id]) // Relates Preferences to User
+}
+
 model Recipe {
-  id          Int      @id @default(autoincrement())
-  name        String   // Name of the recipe
-  details     String   // Recipe details or instructions
-  createdAt   DateTime @default(now())
-  userId      Int      // Foreign key to the User model
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Relates Recipe to User
+  id        Int      @id @default(autoincrement())
+  name      String // Name of the recipe
+  details   String // Recipe details or instructions
+  createdAt DateTime @default(now())
+  userId    Int // Foreign key to the User model
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Relates Recipe to User
 }
 
 model User {
-  id          Int       @id @default(autoincrement())
-  name        String?   // Name is optional
-  email       String    @unique
-  createdAt   DateTime  @default(now())
-  uid         String    @unique
+  id          Int          @id @default(autoincrement())
+  name        String? // Name is optional
+  email       String       @unique
+  createdAt   DateTime     @default(now())
+  uid         String       @unique
   image       String?
   accounts    Account[]
   sessions    Session[]
-  diet        Diet?     @default(OMNIVORE) // Default diet is omnivore
-  allergies   String[]  @default([])       // Default to no allergies
-  recipes     Recipe[]  // Relation to the Recipe model
+  preferences Preferences? // One-to-one relation with Preferences
+  recipes     Recipe[] // Relation to the Recipe model
 }
 
 model Account {
-  id                String   @id @default(cuid())
+  id                String  @id @default(cuid())
   userId            Int
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade on delete
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade on delete
   type              String
   provider          String
   providerAccountId String
