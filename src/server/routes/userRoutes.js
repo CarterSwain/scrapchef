@@ -73,7 +73,7 @@ router.post('/users', async (req, res) => {
   }
 });
 
-//Save recipe
+// Save recipe
 router.post('/save-recipe', async (req, res) => {
   const { userId, recipeName, recipeDetails } = req.body;
 
@@ -87,7 +87,7 @@ router.post('/save-recipe', async (req, res) => {
         name: recipeName,
         details: recipeDetails,
         user: {
-          connect: { uid: userId },
+          connect: { id: userId },
         },
       },
     });
@@ -146,26 +146,37 @@ router.delete('/users/:uid/recipes/:recipeId', async (req, res) => {
   }
 });
 
-// PUT: Update user preferences
-router.put('/users/:uid/preferences', async (req, res) => {
+// GET: Retrieve user preferences
+router.get('/users/:uid/preferences', async (req, res) => {
   const { uid } = req.params;
-  const { dietType, avoidedIngredients } = req.body;
 
   try {
-    const updatedUser = await prisma.user.update({
+    // Find the user by `uid`
+    const user = await prisma.user.findUnique({
       where: { uid },
-      data: {
-        diet: dietType,
-        allergies: avoidedIngredients,
-      },
     });
 
-    res.status(200).json(updatedUser);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Find preferences by `user.id`
+    const preferences = await prisma.preferences.findUnique({
+      where: { userId: user.id },
+    });
+
+    if (!preferences) {
+      return res.status(404).json({ error: 'Preferences not found' });
+    }
+
+    res.json(preferences);
   } catch (error) {
-    console.error('Error updating preferences:', error.message);
-    res.status(500).json({ error: 'Failed to update preferences.' });
+    console.error('Error fetching preferences:', error.message);
+    res.status(500).json({ error: 'Failed to fetch preferences.' });
   }
 });
+
+
 
 // PUT: Update user preferences
 router.put('/users/:uid/preferences', async (req, res) => {
@@ -173,21 +184,32 @@ router.put('/users/:uid/preferences', async (req, res) => {
   const { diet, allergies } = req.body;
 
   try {
-    const updatedUser = await prisma.user.update({
+    // Find the user by `uid`
+    const user = await prisma.user.findUnique({
       where: { uid },
-      data: {
-        diet,
-        allergies,
-      },
     });
 
-    res.status(200).json(updatedUser);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Validate request body
+    if (!diet || !Array.isArray(allergies)) {
+      return res.status(400).json({ error: 'Invalid preferences data' });
+    }
+
+    // Upsert preferences by `user.id`
+    const updatedPreferences = await prisma.preferences.upsert({
+      where: { userId: user.id },
+      update: { diet, allergies },
+      create: { diet, allergies, userId: user.id },
+    });
+
+    res.status(200).json(updatedPreferences);
   } catch (error) {
     console.error('Error updating preferences:', error.message);
     res.status(500).json({ error: 'Failed to update preferences.' });
   }
 });
-
-
 
 export default router;

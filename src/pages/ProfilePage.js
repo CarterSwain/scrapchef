@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GenerateRecipePageButton from '../components/GenerateRecipePageButton.js';
 import DeleteRecipeButton from '../components/DeleteRecipeButton.js';
-import EditPreferences from '../components/EditPreferences.js'; // Import the new component
+import EditPreferences from '../components/EditPreferences.js'; 
 import axios from 'axios';
 
 const ProfilePage = ({ user }) => {
@@ -54,8 +54,12 @@ const ProfilePage = ({ user }) => {
         <h2 className="text-2xl font-bold mt-4">{user.displayName}</h2>
       </div>
 
-      {/* Preferences Section */}
-      <EditPreferences user={user} />
+     {/* Preferences Section */}
+  
+
+     <EditPreferences uid={user?.uid} />
+
+
 
       {/* Recipes Section */}
       <div className="mt-12 w-full max-w-4xl">
