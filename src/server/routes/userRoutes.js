@@ -8,25 +8,33 @@ const router = express.Router();
 router.get('/users/:uid', async (req, res) => {
   const { uid } = req.params;
 
-  console.log('Checking user existence for UID:', uid); // Log the UID being checked
+  console.log('Checking user existence for UID:', uid);
 
   try {
     const user = await prisma.user.findUnique({
       where: { uid },
     });
 
-    if (user) {
-      console.log('User exists:', user);
-      res.status(200).json({ exists: true, user });
-    } else {
+    if (!user) {
       console.log('User not found for UID:', uid);
-      res.status(404).json({ exists: false });
+      return res.status(404).json({ exists: false });
     }
+
+    console.log('User exists:', user);
+
+    const preferences = await prisma.preferences.findUnique({
+      where: { userId: user.id },
+    });
+
+    const hasPreferences = !!preferences;
+
+    res.status(200).json({ exists: true, user, hasPreferences });
   } catch (error) {
     console.error('Error checking user existence:', error.message);
     res.status(500).json({ error: 'Failed to check user existence' });
   }
 });
+
 
 // POST: Save a new user or update existing user data
 router.post('/users', async (req, res) => {

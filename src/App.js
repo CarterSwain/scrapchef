@@ -20,7 +20,7 @@ function App() {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
-  
+
       if (currentUser) {
         try {
           // Check if user already exists in the database
@@ -29,12 +29,15 @@ function App() {
               'Content-Type': 'application/json',
             },
           });
-  
+
           if (!response.data.exists) {
-            console.log('New user detected, redirecting to profile setup...');
+            console.log('New user detected, redirecting to diet setup...');
+            navigate('/diet');
+          } else if (!response.data.hasPreferences) {
+            console.log('User exists but preferences are not set. Redirecting...');
             navigate('/diet');
           } else {
-            console.log('Existing user detected.');
+            console.log('Existing user with preferences detected.');
             if (location.pathname === '/profile' || location.pathname === '/generate-recipe') {
               console.log(`Staying on the current page: ${location.pathname}`);
               return; // Do not navigate if already on the desired page
@@ -43,15 +46,14 @@ function App() {
             navigate('/profile');
           }
         } catch (error) {
-          console.error('Error checking or saving user:', error.response?.data || error.message);
+          console.error('Error checking user existence:', error.response?.data || error.message);
           alert('An error occurred while processing user data. Please try again.');
         }
       }
     });
-  
+
     return () => unsubscribe();
   }, [navigate, location.pathname]);
-  
 
   return (
     <div className="App app-background min-h-screen flex flex-col justify-center items-center text-black relative">
@@ -91,51 +93,25 @@ function App() {
         />
         <Route
           path="/diet"
-          element={
-            user ? (
-              <DietPage />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
+          element={user ? <DietPage uid={user.uid} /> : <Navigate to="/" />}
         />
         <Route
           path="/avoided-ingredients"
-          element={
-            user ? (
-              <AllergyPage />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
+          element={user ? <AllergyPage uid={user.uid} /> : <Navigate to="/" />}
         />
         <Route
           path="/generate-recipe"
-          element={
-            user ? (
-              <GenerateRecipePage user={user} />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
+          element={user ? <GenerateRecipePage user={user} /> : <Navigate to="/" />}
         />
         <Route
           path="/profile"
-          element={
-            user ? (
-              <ProfilePage
-                user={user}
-                recipes={[]} // Pass an array of recipes
-              />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
+          element={user ? <ProfilePage user={user} recipes={[]} /> : <Navigate to="/" />}
         />
       </Routes>
     </div>
   );
 }
+
 
 export default function AppWrapper() {
   return (

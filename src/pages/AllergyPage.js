@@ -2,32 +2,42 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const AllergyPage = ({ user }) => {
+const AllergyPage = ({ uid }) => {
   const [allergies, setAllergies] = useState([]);
-  const navigate = useNavigate(); // Correct library for React Router
+  const [error, setError] = useState(null);
+  const navigate = useNavigate(); // React Router navigation hook
 
+  // Add an allergy to the list
   const handleAddAllergy = (event) => {
     if (event.key === 'Enter' && event.target.value.trim() !== '') {
       setAllergies([...allergies, event.target.value.trim()]);
-      event.target.value = '';
+      event.target.value = ''; // Clear the input field
     }
   };
 
+  // Remove an allergy from the list
   const handleRemoveAllergy = (allergyToRemove) => {
     setAllergies(allergies.filter((allergy) => allergy !== allergyToRemove));
   };
 
+  // Submit allergies to the backend and navigate to profile
   const handleSubmit = async () => {
     try {
-      await axios.put(`http://localhost:5001/api/users/${user.uid}`, {
+      console.log('Saving allergies for UID:', uid);
+      setError(null); // Clear any previous error
+
+      // Update allergies in the backend
+      await axios.put(`http://localhost:5001/api/users/${uid}/preferences`, {
         allergies,
       });
 
-      // Navigate to profile page after submission
+      console.log('Allergies saved:', allergies);
+
+      // Navigate to profile page
       navigate('/profile');
     } catch (error) {
       console.error('Error saving allergies:', error.message);
-      alert('Failed to save allergies. Please try again.');
+      setError('Failed to save allergies. Please try again.');
     }
   };
 
@@ -38,6 +48,14 @@ const AllergyPage = ({ user }) => {
         Add the ingredients you wish to avoid.
       </p>
 
+      {/* Error Message */}
+      {error && (
+        <p className="text-red-500 text-center mb-4">
+          {error}
+        </p>
+      )}
+
+      {/* Allergy Input and List */}
       <div className="w-96">
         <input
           type="text"
@@ -64,6 +82,7 @@ const AllergyPage = ({ user }) => {
         </ul>
       </div>
 
+      {/* Submit Button */}
       <button
         onClick={handleSubmit}
         className="mt-6 px-6 py-3 bg-green-500 text-white font-bold rounded shadow hover:bg-green-700 transition"
@@ -75,3 +94,4 @@ const AllergyPage = ({ user }) => {
 };
 
 export default AllergyPage;
+
