@@ -7,19 +7,27 @@ const SaveRecipeButton = ({ userId, recipe }) => {
   const [success, setSuccess] = useState(false);
 
   const handleSaveRecipe = async () => {
+    if (!userId || !recipe || !recipe.recipeName || !recipe.recipeDetails) {
+      setError('Invalid input data. Please check the recipe details.');
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setSuccess(false);
 
     try {
-      await axios.post('http://localhost:5001/api/save-recipe', {
+      // Make the API request to save the recipe
+      const response = await axios.post('http://localhost:5001/api/save-recipe', {
         userId,
         recipeName: recipe.recipeName,
         recipeDetails: recipe.recipeDetails,
       });
+
+      console.log('Recipe saved successfully:', response.data);
       setSuccess(true);
     } catch (err) {
-      console.error('Error saving recipe:', err.message);
+      console.error('Error saving recipe:', err.message || err.response?.data);
       setError('Failed to save the recipe. Please try again.');
     } finally {
       setLoading(false);

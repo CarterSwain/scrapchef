@@ -81,7 +81,11 @@ router.post('/users', async (req, res) => {
   }
 });
 
-// Save recipe
+
+
+
+
+// POST: Save recipe
 router.post('/save-recipe', async (req, res) => {
   const { userId, recipeName, recipeDetails } = req.body;
 
@@ -95,17 +99,24 @@ router.post('/save-recipe', async (req, res) => {
         name: recipeName,
         details: recipeDetails,
         user: {
-          connect: { id: userId },
+          connect: { uid: userId }, // Ensure `userId` is an integer
         },
       },
     });
 
     res.status(200).json({ message: 'Recipe saved successfully.', recipe: savedRecipe });
   } catch (error) {
-    console.error('Error saving recipe:', error.message);
+    console.error('Error saving recipe:', error);
     res.status(500).json({ error: 'Failed to save recipe.' });
   }
 });
+
+
+
+
+
+
+
 
 // GET: Fetch recipes for a specific user
 router.get('/users/:uid/recipes', async (req, res) => {
