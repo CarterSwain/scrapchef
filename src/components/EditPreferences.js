@@ -103,7 +103,7 @@ const EditPreferences = ({ uid }) => {
   };
 
   return (
-    <div className="mt-6 bg-[#8dc63f] p-4 rounded-lg shadow-md w-full max-w-md">
+    <div className="mt-6 bg-lettuce p-4 rounded-lg shadow-md w-full max-w-md">
       <h3 className="text-xl font-semibold mb-4">Edit Preferences</h3>
       {loading && <p className="text-gray-500">Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}

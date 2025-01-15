@@ -12,7 +12,6 @@ const ProfilePage = ({ user }) => {
   useEffect(() => {
     const fetchUserRecipes = async () => {
       try {
-        // Fetch user recipes
         const recipesResponse = await axios.get(
           `http://localhost:5001/api/users/${user.uid}/recipes`,
           {
@@ -21,7 +20,6 @@ const ProfilePage = ({ user }) => {
             },
           }
         );
-
         setRecipes(recipesResponse.data.recipes || []);
       } catch (error) {
         console.error('Error fetching user recipes:', error.message);
@@ -40,56 +38,65 @@ const ProfilePage = ({ user }) => {
   return (
     <div className="min-h-screen flex flex-col items-center">
       {/* Header */}
-      <div className="w-full flex justify-between items-center p-6 bg-yellow-300">
+      <div className="w-full flex justify-between items-center p-6">
         <h1 className="text-4xl font-bold text-black">ScrapChef</h1>
+        <button
+          onClick={() => navigate('/logout')}
+          className="text-black font-bold"
+        >
+          Log Out
+        </button>
       </div>
 
-      {/* User Info */}
-      <div className="mt-8 flex flex-col items-center">
-        <img
-          src={user.photoURL || '/default-profile.png'}
-          alt={`${user.displayName}'s profile`}
-          className="w-32 h-32 rounded-full shadow-md"
-        />
-        <h2 className="text-2xl font-bold mt-4">{user.displayName}</h2>
-      </div>
+      {/* User Info Section */}
+      <div className="flex flex-row w-full max-w-6xl mt-8">
+        {/* Sidebar Section */}
+        <div className="w-1/3 bg-white border border-black rounded-xl shadow-lg p-6 flex flex-col items-center">
+          <img
+            src={user.photoURL || '/default-profile.png'}
+            alt={`${user.displayName}'s profile`}
+            className="w-24 h-24 rounded-full shadow-md mb-4"
+          />
+          <h2 className="text-2xl font-bold mb-4">{user.displayName}</h2>
+          <div className="w-full">
+            <h3 className="font-semibold text-lg mb-2">Preferences:</h3>
+            <EditPreferences uid={user?.uid} />
+          </div>
+        </div>
 
-     {/* Preferences Section */}
-  
-
-     <EditPreferences uid={user?.uid} />
-
-
-
-      {/* Recipes Section */}
-      <div className="mt-12 w-full max-w-4xl">
-        <h3 className="text-3xl font-bold text-center mb-6">Your Recipes</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {recipes.length > 0 ? (
-            recipes.map((recipe) => (
-              <div
-                key={recipe.id}
-                className="bg-white text-black p-4 rounded-lg shadow-md hover:shadow-lg transition"
-              >
-                <h4 className="text-lg font-bold mb-2">{recipe.name}</h4>
-                <p className="text-sm text-gray-700">{recipe.details}</p>
-                <DeleteRecipeButton
-                  userId={user.uid}
-                  recipeId={recipe.id}
-                  onDelete={handleDeleteRecipe}
-                />
-              </div>
-            ))
-          ) : (
-            <p className="text-center col-span-3">No recipes found. Start creating!</p>
-          )}
+        {/* Recipes Section */}
+        <div className="flex-1 ml-6 bg-tomato border border-black rounded-xl shadow-lg p-6 rounded-xl">
+          <h3 className="text-3xl font-bold text-center text-white mb-6">Your Recipes</h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {recipes.length > 0 ? (
+              recipes.map((recipe) => (
+                <div
+                  key={recipe.id}
+                  className="bg-white text-black p-4 rounded-lg shadow-md hover:shadow-lg transition"
+                >
+                  <h4 className="text-lg font-bold mb-2">{recipe.name}</h4>
+                  <p className="text-sm text-gray-700">{recipe.details}</p>
+                  <DeleteRecipeButton
+                    userId={user.uid}
+                    recipeId={recipe.id}
+                    onDelete={handleDeleteRecipe}
+                  />
+                </div>
+              ))
+            ) : (
+              <p className="text-center col-span-3 text-white">No recipes found. Start creating!</p>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Generate New Recipe Button */}
-      <GenerateRecipePageButton />
+      <div className="mt-6">
+        <GenerateRecipePageButton />
+      </div>
     </div>
   );
 };
 
 export default ProfilePage;
+
