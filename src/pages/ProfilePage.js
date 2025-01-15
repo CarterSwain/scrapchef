@@ -38,7 +38,7 @@ const ProfilePage = ({ user }) => {
   };
 
   return (
-    <div className="min-h-screen bg-yellow-400 flex flex-col items-center">
+    <div className="min-h-screen flex flex-col items-center">
       {/* Header */}
       <div className="w-full flex justify-between items-center p-6 bg-yellow-300">
         <h1 className="text-4xl font-bold text-black">ScrapChef</h1>
