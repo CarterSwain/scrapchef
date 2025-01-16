@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header.js"; // Importing the Header component
+import LogoutButton from "../components/LogoutButton.js";
 import GenerateRecipePageButton from "../components/GenerateRecipePageButton.js";
 import DeleteRecipeButton from "../components/DeleteRecipeButton.js";
 import EditPreferences from "../components/EditPreferences.js";
@@ -69,13 +69,9 @@ const ProfilePage = ({ user }) => {
   console.log("Recipes:", recipes);
 
   return (
-    
-    <div className="min-h-screen flex flex-col items-center">
-      {/* Header Component */}
-      <Header />
-
+    <div className="min-h-screen flex flex-col items-center justify-center relative">
       {/* User Info and Recipes Section */}
-      <div className="flex flex-col md:flex-row w-full max-w-6xl mt-8 gap-6 justify-center items-start">
+      <div className="flex flex-col md:flex-row w-full max-w-6xl gap-6 justify-center items-start">
         {/* Sidebar Section */}
         <div className="flex flex-col items-center bg-white border border-black rounded-xl shadow-lg p-8 md:w-1/3 lg:w-1/4 space-y-4 min-w-[250px]">
           <div className="bg-lettuce p-1 rounded-full">
@@ -87,14 +83,16 @@ const ProfilePage = ({ user }) => {
           </div>
           <h2 className="text-2xl font-bold text-center">{user.displayName}</h2>
           <div className="w-full">
-            <h3 className="font-semibold text-lg mb-2">Preferences:</h3>
             <EditPreferences uid={user?.uid} />
+          </div>
+          <div className="w-full mt-4">
+            <GenerateRecipePageButton />
           </div>
         </div>
 
         {/* Recipes Section */}
         <div
-          className="flex-1 bg-tomato border border-black rounded-xl shadow-lg max-w-full"
+          className="flex-1 bg-tomato border border-black rounded-xl shadow-lg w-[500px]"
           style={{ height: "400px" }}
         >
           <h3 className="text-3xl font-bold text-center text-white mb-6">
@@ -126,9 +124,12 @@ const ProfilePage = ({ user }) => {
         </div>
       </div>
 
-      <div className="mt-8">
-        <GenerateRecipePageButton />
+      {/* Logout Button in Bottom-Right Corner */}
+      <div className="absolute bottom-4 right-4 z-10">
+        <LogoutButton />
       </div>
+
+      {/* Removed duplicate GenerateRecipePageButton */}
 
       {selectedRecipe && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
