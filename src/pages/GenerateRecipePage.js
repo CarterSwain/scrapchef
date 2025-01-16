@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { getRecipeFromIngredients } from "../api/openai.js";
 import RecipeDisplay from "../components/RecipeDisplay.js";
+import ScrapChefPot from "../assets/ScrapChefPot.svg"; // Import the SVG file
 
-const GenerateRecipePage = ({user}) => {
+const GenerateRecipePage = ({ user }) => {
   const [ingredients, setIngredients] = useState("");
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -30,10 +31,10 @@ const GenerateRecipePage = ({user}) => {
     <div className="min-h-screen flex flex-col justify-center items-center">
       {/* Header Section */}
       <h1 className="text-6xl font-bold text-black mb-4">ScrapChef</h1>
-      <p className="text-2xl font-medium text-gray-800 mb-8">Waste less, feast more.</p>
+      <p className="text-2xl font-medium text-gray-800 mb-12">Waste less, feast more.</p>
 
       {/* Ingredients Input */}
-      <div className="relative mb-8">
+      <div className="relative mb-12">
         <input
           type="text"
           value={ingredients}
@@ -49,9 +50,21 @@ const GenerateRecipePage = ({user}) => {
         </button>
       </div>
 
-      {/* Recipe Display */}
-      <RecipeDisplay recipe={recipe} loading={loading} error={error} userId={user.uid} />
+      {/* SVG Display */}
+      {!loading && !recipe && (
+        <div className="absolute mb-4 bottom-0 z-0">
+          <img
+            src={ScrapChefPot}
+            alt="ScrapChef Pot"
+            className="w-[1200px] h-auto mb-6 mx-auto" // Explicitly set to 400px wide
+          />
+        </div>
+      )}
 
+      {/* Recipe Display */}
+      {recipe || loading || error ? (
+        <RecipeDisplay recipe={recipe} loading={loading} error={error} userId={user.uid} />
+      ) : null} {/* Only render RecipeDisplay when necessary */}
     </div>
   );
 };
