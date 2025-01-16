@@ -17,6 +17,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.1.1",
     "react-scripts": "^5.0.1",
+    "react-slick": "^0.30.3",
+    "slick-carousel": "^1.8.1",
     "web-vitals": "^4.2.4"
   },
   "scripts": {
@@ -27,7 +29,6 @@
     "eject": "react-scripts eject",
     "server": "nodemon src/server/server.js",
     "dev": "npm run clean && concurrently \"npm run server\" \"npm start\""
-
   },
   "eslintConfig": {
     "extends": [
