@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './styles/App.css'; // Assuming this has the background styles now
 import LoginButton from './components/LoginButton.js';
-import LogoutButton from './components/LogoutButton.js';
 import ProfilePageButton from './components/ProfilePageButton.js';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import axios from 'axios';
@@ -57,13 +56,6 @@ function App() {
 
   return (
     <div className="App app-background min-h-screen flex flex-col justify-center items-center text-black relative">
-      {/* Logout Button */}
-      {user && (
-        <div className="absolute top-4 right-4">
-          <LogoutButton />
-        </div>
-      )}
-
       {/* Profile Page Button */}
       {user && location.pathname !== '/profile' && (
         <div className="absolute bottom-4 right-4">
@@ -112,7 +104,6 @@ function App() {
   );
 }
 
-
 export default function AppWrapper() {
   return (
     <Router>
@@ -120,3 +111,4 @@ export default function AppWrapper() {
     </Router>
   );
 }
+

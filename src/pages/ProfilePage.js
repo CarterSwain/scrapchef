@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header.js"; // Importing the Header component
 import GenerateRecipePageButton from "../components/GenerateRecipePageButton.js";
 import DeleteRecipeButton from "../components/DeleteRecipeButton.js";
 import EditPreferences from "../components/EditPreferences.js";
@@ -12,8 +13,6 @@ import "slick-carousel/slick/slick-theme.css";
 // Workaround for react-slick export issues
 // @ts-ignore
 const SliderComponent = !!Slider.default ? Slider.default : Slider;
-
-
 
 const ProfilePage = ({ user }) => {
   const [recipes, setRecipes] = useState([]);
@@ -66,21 +65,19 @@ const ProfilePage = ({ user }) => {
       },
     ],
   };
-  
 
   console.log("Recipes:", recipes);
 
   return (
+    
     <div className="min-h-screen flex flex-col items-center">
-      <div className="w-full flex justify-between items-center p-6">
-        <h1 className="text-4xl font-bold text-black">ScrapChef</h1>
-      </div>
+      {/* Header Component */}
+      <Header />
 
       {/* User Info and Recipes Section */}
       <div className="flex flex-col md:flex-row w-full max-w-6xl mt-8 gap-6 justify-center items-start">
         {/* Sidebar Section */}
         <div className="flex flex-col items-center bg-white border border-black rounded-xl shadow-lg p-8 md:w-1/3 lg:w-1/4 space-y-4 min-w-[250px]">
-          {/* User Profile Image with Lettuce Background */}
           <div className="bg-lettuce p-1 rounded-full">
             <img
               src={user.photoURL || "/default-profile.png"}
@@ -88,52 +85,45 @@ const ProfilePage = ({ user }) => {
               className="w-24 h-24 rounded-full shadow-md"
             />
           </div>
-          {/* User Name */}
           <h2 className="text-2xl font-bold text-center">{user.displayName}</h2>
-          {/* Preferences Section */}
           <div className="w-full">
             <h3 className="font-semibold text-lg mb-2">Preferences:</h3>
             <EditPreferences uid={user?.uid} />
           </div>
         </div>
 
-     {/* Recipes Section */}
-<div
-  className="flex-1 bg-tomato border border-black rounded-xl shadow-lg max-w-full"
-  style={{ height: "400px" }} // Adjust the height value as needed
->
-  <h3 className="text-3xl font-bold text-center text-white mb-6">
-    Your Recipes
-  </h3>
-  {recipes.length > 0 ? (
-    <SliderComponent {...settings}>
-      {recipes.map((recipe, index) => (
+        {/* Recipes Section */}
         <div
-          key={`${recipe.id}-${index}`} // Ensure each slide has a unique key
-          className="bg-white text-black p-10 mt-20 rounded-lg shadow-md hover:shadow-lg transition"
-          style={{
-            width: "200px", // Smaller card width
-            margin: "20 auto",
-            textAlign: "center",
-          }}
-          onClick={() => setSelectedRecipe(recipe)}
+          className="flex-1 bg-tomato border border-black rounded-xl shadow-lg max-w-full"
+          style={{ height: "400px" }}
         >
-          <h4 className="text-lg font-bold text-center">
-            {recipe.name.replace(/^Recipe:\s*/, "")}
-          </h4>
-          <p className="text-sm text-gray-700">
-            {recipe.ingredients} {/* Assuming you have ingredients to display */}
-          </p>
+          <h3 className="text-3xl font-bold text-center text-white mb-6">
+            Your Recipes
+          </h3>
+          {recipes.length > 0 ? (
+            <SliderComponent {...settings}>
+              {recipes.map((recipe, index) => (
+                <div
+                  key={`${recipe.id}-${index}`}
+                  className="bg-white text-black p-10 mt-20 rounded-lg shadow-md hover:shadow-lg transition"
+                  style={{
+                    width: "200px",
+                    margin: "20 auto",
+                    textAlign: "center",
+                  }}
+                  onClick={() => setSelectedRecipe(recipe)}
+                >
+                  <h4 className="text-lg font-bold text-center">
+                    {recipe.name.replace(/^Recipe:\s*/, "")}
+                  </h4>
+                  <p className="text-sm text-gray-700">{recipe.ingredients}</p>
+                </div>
+              ))}
+            </SliderComponent>
+          ) : (
+            <p className="text-center text-white">No recipes found. Start creating!</p>
+          )}
         </div>
-      ))}
-    </SliderComponent>
-  ) : (
-    <p className="text-center text-white">
-      No recipes found. Start creating!
-    </p>
-  )}
-</div>
-
       </div>
 
       <div className="mt-8">
@@ -143,12 +133,9 @@ const ProfilePage = ({ user }) => {
       {selectedRecipe && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 shadow-lg max-w-lg w-full max-h-[80vh] overflow-y-auto">
-            {/* Recipe Title */}
             <h3 className="text-3xl font-bold mb-4 text-center">
               {selectedRecipe.name.replace(/^Recipe:\s*/, "")}
             </h3>
-
-            {/* Recipe Details */}
             <div className="text-gray-700">
               {selectedRecipe.details
                 .split(/(Ingredients:|Instructions:)/)
@@ -180,8 +167,6 @@ const ProfilePage = ({ user }) => {
                   }
                 })}
             </div>
-
-            {/* Action Buttons */}
             <div className="flex justify-center items-center gap-4 mt-6">
               <PrintRecipeButton
                 recipe={selectedRecipe}
@@ -211,4 +196,3 @@ const ProfilePage = ({ user }) => {
 };
 
 export default ProfilePage;
-
