@@ -103,8 +103,7 @@ const EditPreferences = ({ uid }) => {
   };
 
   return (
-    <div className="mt-6 bg-lettuce p-4 rounded-lg shadow-md w-full max-w-md">
-      <h3 className="text-xl font-semibold mb-4">Edit Preferences</h3>
+    <div className="mt-6 bg-gray text-cream p-4 rounded-md border border-2 border-garden w-full max-w-md">
       {loading && <p className="text-gray-500">Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
       {success && <p className="text-green-500">Preferences updated successfully!</p>}
@@ -144,7 +143,7 @@ const EditPreferences = ({ uid }) => {
             <button
               onClick={handleSave}
               disabled={loading}
-              className={`px-4 py-2 rounded-md text-white font-semibold shadow-md ${
+              className={`px-4 py-2 rounded-md bg-blue-500 text-white font-semibold shadow-md ${
                 loading
                   ? 'bg-gray-400 cursor-not-allowed'
                   : 'bg-blue-500 hover:bg-blue-600 transition'
@@ -159,13 +158,13 @@ const EditPreferences = ({ uid }) => {
           <p>
             <strong>Diet Type:</strong> {preferences.diet}
           </p>
-          <p>
-            <strong>Ingredients to Avoid:</strong>{' '}
+          <p><br></br>
+            <strong>Avoided Ingredients:</strong>{' '}
             {preferences.allergies.length > 0 ? preferences.allergies.join(', ') : 'None'}
           </p>
           <button
             onClick={handleEdit}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+            className="mt-4 px-4 py-2 bg-blue-500 shadow-md text-cream rounded-lg"
           >
             Edit Preferences
           </button>
