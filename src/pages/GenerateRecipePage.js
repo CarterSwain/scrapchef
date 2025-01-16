@@ -40,7 +40,7 @@ const GenerateRecipePage = ({ user }) => {
           value={ingredients}
           onChange={(e) => setIngredients(e.target.value)}
           placeholder="Enter ingredients (comma-separated)..."
-          className="w-96 px-4 py-2 text-lg text-gray-700 border-2 border-red-500 rounded-full focus:outline-none focus:ring-2 focus:ring-red-400"
+          className="w-[700px] px-4 py-2 text-lg text-gray-700 border-2 border-red-500 rounded-full focus:outline-none focus:ring-2 focus:ring-red-400"
         />
         <button
           onClick={handleGenerateRecipe}
