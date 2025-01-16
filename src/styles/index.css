@@ -11,7 +11,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('/src/assets/scrapchefBGImage.png');
+  background-image: url('/src/assets/ScrapChefBG2.png');
   background-size: cover; /* Ensure the image covers the entire screen */
   background-repeat: no-repeat; /* Prevent tiling */
   background-attachment: fixed; /* Keep the background fixed during scrolling */
