@@ -77,45 +77,49 @@ const ProfilePage = ({ user }) => {
         </button>
       </div>
 
+{/* User Info and Recipes Section */}
+<div className="flex flex-col md:flex-row w-full max-w-6xl mt-8 gap-6 justify-center items-start">
+  {/* Sidebar Section */}
+  <div className="flex flex-col items-center bg-white border border-black rounded-xl shadow-lg p-8 md:w-1/3 lg:w-1/4 space-y-4 min-w-[250px]">
+    {/* User Profile Image */}
+    <img
+      src={user.photoURL || "/default-profile.png"}
+      alt={`${user.displayName}'s profile`}
+      className="w-24 h-24 rounded-full shadow-md"
+    />
+    {/* User Name */}
+    <h2 className="text-2xl font-bold text-center">{user.displayName}</h2>
+    {/* Preferences Section */}
+    <div className="w-full">
+      <h3 className="font-semibold text-lg mb-2">Preferences:</h3>
+      <EditPreferences uid={user?.uid} />
+    </div>
+  </div>
 
-      {/* User Info and Recipes Section */}
-      <div className="flex flex-col md:flex-row w-full max-w-6xl mt-8 gap-6">
-        {/* Sidebar Section */}
-        <div className="w-1/3 bg-white border border-black rounded-xl shadow-lg p-6 flex flex-col items-center">
-          <img
-            src={user.photoURL || "/default-profile.png"}
-            alt={`${user.displayName}'s profile`}
-            className="w-24 h-24 rounded-full shadow-md mb-4"
-          />
-          <h2 className="text-2xl font-bold mb-4">{user.displayName}</h2>
-          <div className="w-full">
-            <h3 className="font-semibold text-lg mb-2">Preferences:</h3>
-            <EditPreferences uid={user?.uid} />
+  {/* Recipes Section */}
+  <div className="flex-1 bg-tomato border border-black rounded-xl shadow-lg p-6 max-w-full">
+    <h3 className="text-3xl font-bold text-center text-white mb-6">Your Recipes</h3>
+    {recipes.length > 0 ? (
+      <SliderComponent {...settings}>
+        {recipes.map((recipe, index) => (
+          <div
+            key={`${recipe.id}-${index}`} // Ensure each slide has a unique key
+            className="bg-white text-black p-4 rounded-lg shadow-md hover:shadow-lg transition"
+            style={{ width: "90%", margin: "0 auto", textAlign: "center" }}
+            onClick={() => setSelectedRecipe(recipe)}
+          >
+            <h4 className="text-xl font-bold text-center">
+              {recipe.name.replace(/^Recipe:\s*/, "")}
+            </h4>
           </div>
-        </div>
+        ))}
+      </SliderComponent>
+    ) : (
+      <p className="text-center text-white">No recipes found. Start creating!</p>
+    )}
+  </div>
+</div>
 
-        {/* Recipes Section */}
-        <div className="flex-1 ml-6 bg-tomato border border-black rounded-xl shadow-lg p-6" style={{ maxWidth: "100%" }}>
-          <h3 className="text-3xl font-bold text-center text-white mb-6">Your Recipes</h3>
-          {recipes.length > 0 ? (
-            <SliderComponent {...settings}>
-              {recipes.map((recipe, index) => (
-                <div
-                  key={`${recipe.id}-${index}`} // Ensure each slide has a unique key
-                  className="bg-white text-black p-4 rounded-lg shadow-md hover:shadow-lg transition"
-                  style={{ width: "90%",
-                  margin: "0 auto",textAlign: "center" }}
-                  onClick={() => setSelectedRecipe(recipe)}
-                >
-                  <h4 className="text-xl font-bold text-center">{recipe.name.replace(/^Recipe:\s*/, "")}</h4>
-                </div>
-              ))}
-            </SliderComponent>
-          ) : (
-            <p className="text-center text-white">No recipes found. Start creating!</p>
-          )}
-        </div>
-      </div>
 
       <div className="mt-8">
         <GenerateRecipePageButton />
