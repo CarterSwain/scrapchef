@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import GenerateRecipePageButton from "../components/GenerateRecipePageButton.js";
 import DeleteRecipeButton from "../components/DeleteRecipeButton.js";
 import EditPreferences from "../components/EditPreferences.js";
+import PrintRecipeButton from "../components/PrintRecipeButton.js";
 import axios from "axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -106,7 +107,7 @@ const ProfilePage = ({ user }) => {
                   margin: "0 auto",textAlign: "center" }}
                   onClick={() => setSelectedRecipe(recipe)}
                 >
-                  <h4 className="text-lg font-bold text-center">{recipe.name}</h4>
+                  <h4 className="text-xl font-bold text-center">{recipe.name.replace(/^Recipe:\s*/, "")}</h4>
                 </div>
               ))}
             </SliderComponent>
@@ -119,29 +120,70 @@ const ProfilePage = ({ user }) => {
       <div className="mt-8">
         <GenerateRecipePageButton />
       </div>
+     
+
 
       {selectedRecipe && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
-            <h3 className="text-2xl font-bold mb-4">{selectedRecipe.name}</h3>
-            <p className="text-gray-700 mb-4">{selectedRecipe.details}</p>
-            <DeleteRecipeButton
-              userId={user.uid}
-              recipeId={selectedRecipe.id}
-              onDelete={(deletedId) => {
-                handleDeleteRecipe(deletedId);
-                handleCloseModal();
-              }}
-            />
-            <button
-              onClick={handleCloseModal}
-              className="mt-4 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-700 transition"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white p-6 shadow-lg max-w-lg w-full max-h-[80vh] overflow-y-auto">
+      {/* Recipe Title */}
+      <h3 className="text-3xl font-bold mb-4 text-center">{selectedRecipe.name.replace(/^Recipe:\s*/, "")}</h3>
+
+      {/* Recipe Details */}
+      <div className="text-gray-700">
+        {selectedRecipe.details.split(/(Ingredients:|Instructions:)/).map((section, index) => {
+          if (section.trim() === "Ingredients:") {
+            return (
+              <h4 key={index} className="text-xl font-semibold mt-4 mb-2">
+                Ingredients
+              </h4>
+            );
+          } else if (section.trim() === "Instructions:") {
+            return (
+              <h4 key={index} className="text-xl font-semibold mt-4 mb-2">
+                Instructions
+              </h4>
+            );
+          } else {
+            return (
+              <p key={index} className="mb-4 leading-tight">
+                {section.trim()}
+              </p>
+            );
+          }
+        })}
+      </div>
+
+{/* Action Buttons */}
+<div className="flex justify-center items-center gap-4 mt-6">
+  <PrintRecipeButton
+    recipe={selectedRecipe}
+    className="flex-shrink-0 w-32 h-12 mt-2 text-center bg-blue-500 text-white rounded-md hover:bg-blue-700 transition"
+  />
+  <DeleteRecipeButton
+    userId={user.uid}
+    recipeId={selectedRecipe.id}
+    className="flex-shrink-0 w-32 h-12 text-center bg-red-500 text-white rounded-md hover:bg-red-700 transition"
+    onDelete={(deletedId) => {
+      handleDeleteRecipe(deletedId);
+      handleCloseModal();
+    }}
+  />
+  <button
+    onClick={handleCloseModal}
+    className="flex-shrink-0 w-32 h-12 px-4 py-2 mt-2 text-center bg-gray-500 text-white rounded-md hover:bg-gray-700 transition"
+  >
+    Close
+  </button>
+</div>
+
+
+    </div>
+  </div>
+)}
+
+
+
     </div>
   );
 };
