@@ -9,6 +9,8 @@ import axios from "axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import DefaultUserImage from "../assets/ScrapChefDefaultUser.svg";
+
 
 // Workaround for react-slick export issues
 // @ts-ignore
@@ -76,7 +78,7 @@ const ProfilePage = ({ user }) => {
         <div className="flex flex-col items-center bg-cream border text-gray border-black rounded-xl shadow-lg p-8 md:w-1/3 lg:w-1/4 space-y-4 min-w-[250px]">
           <div className="bg-garden p-1 rounded-full">
             <img
-              src={user.photoURL || "/default-profile.png"}
+              src={user.photoURL || DefaultUserImage}
               alt={`${user.displayName}'s profile`}
               className="w-24 h-24 rounded-full shadow-sm"
             />
@@ -130,69 +132,68 @@ const ProfilePage = ({ user }) => {
       </div>
 
 
-      {/* Removed duplicate GenerateRecipePageButton */}
+      {/*Selected Recipe Modal */}
 
       {selectedRecipe && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 shadow-lg max-w-lg w-full max-h-[80vh] overflow-y-auto">
-            <h3 className="text-3xl font-bold mb-4 text-center">
-              {selectedRecipe.name.replace(/^Recipe:\s*/, "")}
-            </h3>
-            <div className="text-gray-700">
-              {selectedRecipe.details
-                .split(/(Ingredients:|Instructions:)/)
-                .map((section, index) => {
-                  if (section.trim() === "Ingredients:") {
-                    return (
-                      <h4
-                        key={index}
-                        className="text-xl font-semibold mt-4 mb-2"
-                      >
-                        Ingredients
-                      </h4>
-                    );
-                  } else if (section.trim() === "Instructions:") {
-                    return (
-                      <h4
-                        key={index}
-                        className="text-xl font-semibold mt-4 mb-2"
-                      >
-                        Instructions
-                      </h4>
-                    );
-                  } else {
-                    return (
-                      <p key={index} className="mb-4 leading-tight">
-                        {section.trim()}
-                      </p>
-                    );
-                  }
-                })}
-            </div>
-            <div className="flex justify-center items-center gap-4 mt-6">
-              <PrintRecipeButton
-                recipe={selectedRecipe}
-                className="flex-shrink-0 w-32 h-12 mt-2 text-center bg-blue-500 text-white rounded-md hover:bg-blue-700 transition"
-              />
-              <DeleteRecipeButton
-                userId={user.uid}
-                recipeId={selectedRecipe.id}
-                className="flex-shrink-0 w-32 h-12 text-center bg-red-500 text-white rounded-md hover:bg-red-700 transition"
-                onDelete={(deletedId) => {
-                  handleDeleteRecipe(deletedId);
-                  handleCloseModal();
-                }}
-              />
-              <button
-                onClick={handleCloseModal}
-                className="flex-shrink-0 w-32 h-12 px-4 py-2 mt-2 text-center bg-gray-500 text-white rounded-md hover:bg-gray-700 transition"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="relative bg-white p-6 shadow-lg max-w-lg w-full max-h-[80vh] overflow-y-auto rounded-lg">
+      {/* Close Button (X) */}
+      <button
+        onClick={handleCloseModal}
+        className="absolute top-2 right-2 text-gray-500 hover:text-black transition text-xl font-bold"
+        aria-label="Close"
+      >
+        &times;
+      </button>
+
+      {/* Modal Content */}
+      <h3 className="text-3xl font-bold mb-4 text-center">
+        {selectedRecipe.name.replace(/^Recipe:\s*/, "")}
+      </h3>
+      <div className="text-gray-700">
+        {selectedRecipe.details
+          .split(/(Ingredients:|Instructions:)/)
+          .map((section, index) => {
+            if (section.trim() === "Ingredients:") {
+              return (
+                <h4 key={index} className="text-xl font-semibold mt-4 mb-2">
+                  Ingredients
+                </h4>
+              );
+            } else if (section.trim() === "Instructions:") {
+              return (
+                <h4 key={index} className="text-xl font-semibold mt-4 mb-2">
+                  Instructions
+                </h4>
+              );
+            } else {
+              return (
+                <p key={index} className="mb-4 leading-tight">
+                  {section.trim()}
+                </p>
+              );
+            }
+          })}
+      </div>
+      <div className="flex justify-center items-center gap-4 mt-6">
+        <PrintRecipeButton
+          recipe={selectedRecipe}
+          className="flex-shrink-0 w-32 h-12 font-semibold mt-2 text-center bg-blue-500 text-white rounded-md hover:bg-blue-700 transition"
+        />
+        <DeleteRecipeButton
+          userId={user.uid}
+          recipeId={selectedRecipe.id}
+          className="flex-shrink-0 w-32 h-12 px-4 py-2 mt-2 text-center bg-red-500 text-white rounded-md hover:bg-red-700 transition"
+          onDelete={(deletedId) => {
+            handleDeleteRecipe(deletedId);
+            handleCloseModal();
+          }}
+        />
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

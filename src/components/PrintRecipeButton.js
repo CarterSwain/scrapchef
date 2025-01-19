@@ -24,12 +24,14 @@ const PrintRecipeButton = ({ recipe }) => {
   };
 
   return (
+    <div className="mt-4">
     <button
       onClick={printRecipe}
-      className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition"
+      className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-700 transition"
     >
       Print Recipe
     </button>
+    </div>
   );
 };
 

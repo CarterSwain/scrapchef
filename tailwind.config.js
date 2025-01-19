@@ -10,6 +10,7 @@ module.exports = {
         lettuce: '#8dc63f',
         orange: '#c98662',
         cream: "#FFF8E6",
+        oatmeal: "#fff1cc",
         mint: "#B2F2BB",
         teal: "#118AB2",
         gray: "#3A3A3A",
