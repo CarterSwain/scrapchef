@@ -33,27 +33,7 @@ code {
   overflow: hidden;
 }
 
-@keyframes fall {
-  0% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100vh); /* Adjust to match the pot's position */
-    opacity: 0;
-  }
-}
 
-.animate-fall {
-  animation: fall 2.5s ease-in-out forwards; /* Duration matches setTimeout */
-}
-
-.hidden {
-  display: none;
-}
 
 
 

@@ -103,7 +103,7 @@ const EditPreferences = ({ uid }) => {
   };
 
   return (
-    <div className="mt-6 bg-oatmeal text-gray p-4 rounded-md  w-full max-w-md">
+    <div className="mt-6 bg-cream text-gray p-4 border border-garden rounded-md w-full max-w-md">
       {loading && <p className="text-gray-500">Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
       {success && <p className="text-green-500">Preferences updated successfully!</p>}

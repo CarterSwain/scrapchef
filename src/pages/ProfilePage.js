@@ -75,7 +75,7 @@ const ProfilePage = ({ user }) => {
       {/* User Info and Recipes Section */}
       <div className="flex flex-col md:flex-row w-full max-w-6xl gap-6 justify-center items-start">
         {/* Sidebar Section */}
-        <div className="flex flex-col items-center bg-cream border text-gray border-black rounded-xl shadow-lg p-8 md:w-1/3 lg:w-1/4 space-y-4 min-w-[250px]">
+        <div className="flex flex-col items-center bg-oatmeal text-gray rounded-xl shadow-lg p-8 md:w-1/3 lg:w-1/4 space-y-4 min-w-[250px]">
           <div className="bg-garden p-1 rounded-full">
             <img
               src={user.photoURL || DefaultUserImage}
@@ -99,7 +99,7 @@ const ProfilePage = ({ user }) => {
 
         {/* Recipes Section */}
         <div
-          className="flex-1 bg-garden border border-black rounded-xl shadow-lg w-[500px]"
+          className="flex-1 bg-garden rounded-xl shadow-lg w-[500px]"
           style={{ height: "400px" }}
         >
           <h3 className="text-3xl font-bold text-center text-cream mt-6 mb-4">
@@ -126,7 +126,7 @@ const ProfilePage = ({ user }) => {
               ))}
             </SliderComponent>
           ) : (
-            <p className="text-center text-white">No recipes found. Start creating!</p>
+            <p className="text-center text-white">No saved recipes yet. Let's start cooking!</p>
           )}
         </div>
       </div>
