@@ -30,8 +30,9 @@ const RecipeDisplay = ({ recipe, loading, error, userId }) => {
       {recipe && (
         <>
           <h3 className="text-3xl font-extrabold text-green-700 mb-6 text-center capitalize">
-            {recipe.recipeName}
-          </h3>
+  {recipe.recipeName.replace(/^Recipe Name:\s*/, "")}
+</h3>
+
           <p className="text-lg leading-relaxed text-gray-800 whitespace-pre-wrap">
             {recipe.recipeDetails}
           </p>
