@@ -28,9 +28,15 @@ const GenerateRecipePage = ({ user }) => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center relative">
       {/* Main Content */}
-      <h1 className="text-6xl font-bold text-black mb-4">ScrapChef</h1>
+      <h1
+        className={`text-6xl font-bold text-black mb-4 transition-all ${
+          recipe ? "mt-8" : "mt-0"
+        }`}
+      >
+        ScrapChef
+      </h1>
       <p className="text-2xl font-medium text-gray-800 mb-8">Waste less, feast more.</p>
-
+  
       {/* Ingredients Input */}
       <div className="relative mb-8">
         <input
@@ -47,7 +53,7 @@ const GenerateRecipePage = ({ user }) => {
           Generate
         </button>
       </div>
-
+  
       {/* Recipe Display */}
       {(loading || recipe || error) && (
         <div className="w-full flex justify-center">
