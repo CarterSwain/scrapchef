@@ -22,7 +22,7 @@ router.post('/generate-recipe', async (req, res) => {
       messages: [
         {
           role: 'system',
-          content: 'You are a chef assistant that generates recipes based on ingredients provided.',
+          content: 'You are a chef recipe assistant that generates recipes based on only the ingredients provided, and provides the recipe with a name.',
         },
         {
           role: 'user',

@@ -102,7 +102,7 @@ const ProfilePage = ({ user }) => {
           className="flex-1 bg-garden border border-black rounded-xl shadow-lg w-[500px]"
           style={{ height: "400px" }}
         >
-          <h3 className="text-3xl font-bold text-center text-cream mb-6">
+          <h3 className="text-3xl font-bold text-center text-cream mt-6 mb-4">
             Your Recipes
           </h3>
           {recipes.length > 0 ? (
@@ -178,7 +178,7 @@ const ProfilePage = ({ user }) => {
       <div className="flex justify-center items-center gap-4 mt-6">
         <PrintRecipeButton
           recipe={selectedRecipe}
-          className="flex-shrink-0 w-32 h-12 font-semibold mt-2 text-center bg-blue-500 text-white rounded-md hover:bg-blue-700 transition"
+          className="flex-shrink-0 w-32 h-12 mt-2 text-center bg-blue-500 text-white rounded-md hover:bg-blue-700 transition"
         />
         <DeleteRecipeButton
           userId={user.uid}
