@@ -68,7 +68,7 @@ function App() {
         <Route
           path="/"
           element={
-            <header className="App-header text-center p-6 max-w-md w-full bg-yellow-200 bg-opacity-90 rounded-lg">
+            <header className="App-header text-center p-8 max-w-md w-full bg-garden bg-opacity-70 rounded-lg">
               <h1 className="text-5xl font-bold text-black mb-2">ScrapChef</h1>
               <p className="text-lg font-medium text-gray-700 mb-8">Waste less, feast more.</p>
               {user ? (
@@ -76,7 +76,7 @@ function App() {
                   <p className="mb-4 text-lg text-black">Welcome, {user.displayName}</p>
                 </div>
               ) : (
-                <div className="bg-white rounded-md p-4 shadow-lg border border-gray-300">
+                <div className="rounded-md p-4">
                   <LoginButton />
                 </div>
               )}
