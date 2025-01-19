@@ -18,7 +18,7 @@ const GenerateRecipePageButton = () => {
   return (
     <button
       onClick={handleNavigate}
-      className="bg-garden text-cream font-bold py-2 px-4 rounded-lg shadow-md hover:bg-green-700 transition duration-300"
+      className="bg-garden text-cream py-2 px-4 rounded-lg shadow-md hover:bg-green-700 transition duration-300"
     >
       Generate Recipe
     </button>

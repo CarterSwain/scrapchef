@@ -18,7 +18,7 @@ const LogoutButton = () => {
     <div className="flex flex-col">
       <button
         onClick={handleLogout}
-        className="bg-tomato text-cream font-medium px-6 py-2 shadow-md rounded-lg hover:bg-red-700 transition"
+        className="bg-tomato text-cream px-6 py-2 shadow-md rounded-lg hover:bg-red-700 transition"
       >
         Log Out
       </button>
