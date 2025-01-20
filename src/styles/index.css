@@ -3,6 +3,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  overscroll-behavior: contain; /* Prevents scrolling the background while swiping */
+  touch-action: auto; /* Ensures touch gestures work as expected */
+}
+
+.modal-content {
+  -webkit-overflow-scrolling: touch;
+}
 
 body {
   margin: 0;
@@ -17,7 +25,7 @@ body {
   background-position: center; /* Center the background image */
 }
 
-h1, h2 {
+h1, h2, h3 {
   font-family: "Amatic SC", serif;
   font-weight: 700;
   font-style: normal;

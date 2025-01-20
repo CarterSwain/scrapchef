@@ -18,7 +18,7 @@ const LoginButton = () => {
     <div className="flex flex-col items-center">
       <button
         onClick={handleLogin}
-        className="flex items-center px-6 py-3 bg-cream text-gray rounded-full shadow-md hover:bg-blue-300 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+        className="flex items-center shadow shadow-sm shadow-gray px-6 py-3 bg-cream text-gray rounded-full shadow-md hover:bg-blue-300 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
       >
         <span className="mr-2 font-semibold">Sign in with Google</span>
         <img

@@ -30,17 +30,28 @@ const ProfilePage = ({ user }) => {
             headers: { "Content-Type": "application/json" },
           }
         );
-        console.log("Fetched Recipes:", response.data.recipes);
-        setRecipes(response.data.recipes || []);
+  
+        const cleanedRecipes = response.data.recipes.map((recipe) => ({
+          ...recipe,
+          name: recipe.name.replace(/^Recipe Name:\s*/, ""), // Clean the name
+        }));
+  
+        setRecipes(cleanedRecipes || []);
       } catch (error) {
         console.error("Error fetching recipes:", error.message);
       }
     };
-
+  
     if (user) {
       fetchUserRecipes();
     }
   }, [user]);
+
+  
+  useEffect(() => {
+    document.body.style.overflow = selectedRecipe ? "hidden" : "auto";
+  }, [selectedRecipe]);
+  
 
   const handleDeleteRecipe = (deletedId) => {
     setRecipes((prevRecipes) =>
@@ -60,46 +71,76 @@ const ProfilePage = ({ user }) => {
     slidesToScroll: 1,
     arrows: true,
     adaptiveHeight: true,
+    swipe: true, 
+    touchMove: true, 
     responsive: [
       {
         breakpoint: 768,
         settings: { slidesToShow: 1 },
+        arrows: true,
+        prevArrow: <button style={{ left: "10px" }}>‹</button>,
+        nextArrow: <button style={{ right: "10px" }}>›</button>,
+        swipe: true,
+        touchMove: true,
       },
-    ],
-  };
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        arrows: true,
+        prevArrow: <button style={{ left: "30px" }}>‹</button>,
+        nextArrow: <button style={{ right: "30px" }}>›</button>,
+        swipe: true,
+        touchMove: true,
+      },
+    },
+  ],
+};
 
   console.log("Recipes:", recipes);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center relative">
+
+    {/* Main Header Section */}
+    <div className="flex flex-col justify-center items-center relative mt-4 sm:mt-8 md:mt-12 mb-4">
+      {/* Main Content */}
+      <h1 className="text-6xl">
+        ScrapChef
+      </h1>
+      <p className="text-1xl text-gray-800 mb-8">
+        Waste less, feast more.
+      </p>
+    </div>
+
       {/* User Info and Recipes Section */}
-      <div className="flex flex-col md:flex-row w-full max-w-6xl gap-6 justify-center items-start">
-        {/* Sidebar Section */}
-        <div className="flex flex-col items-center bg-oatmeal text-gray rounded-xl shadow-lg p-8 md:w-1/3 lg:w-1/4 space-y-4 min-w-[250px]">
-          <div className="bg-garden p-1 rounded-full">
-            <img
-              src={user.photoURL || DefaultUserImage}
-              alt={`${user.displayName}'s profile`}
-              className="w-24 h-24 rounded-full shadow-sm"
-            />
-          </div>
-          <h2 className="text-2xl font-bold text-center">{user.displayName}</h2>
-          <div className="w-full mt-4 flex justify-center">
-            <GenerateRecipePageButton />
-          </div>
-          <div className="w-full">
-            <EditPreferences uid={user?.uid} />
-          </div>
-         
-           {/* Logout Button */}
-      <div className="justify-center mt-4 z-10">
-        <LogoutButton />
-      </div>
-        </div>
+      <div className="flex flex-col md:flex-row sm:flex-row w-full max-w-6xl gap-6 justify-center items-start">
+     {/* Sidebar Section */}
+<div className="flex flex-col items-center bg-oatmeal text-gray rounded-xl shadow-lg p-6 sm:p-8 w-full max-w-sm sm:max-w-md md:w-1/3 space-y-4 mx-auto">
+  <div className="bg-garden p-1 rounded-full">
+    <img
+      src={user.photoURL || DefaultUserImage}
+      alt={`${user.displayName}'s profile`}
+      className="w-24 h-24 rounded-full shadow-sm"
+    />
+  </div>
+  <h2 className="text-2xl font-bold text-center">{user.displayName}</h2>
+  <div className="w-full mt-4 flex justify-center">
+    <GenerateRecipePageButton />
+  </div>
+  <div className="w-full">
+    <EditPreferences uid={user?.uid} />
+  </div>
+  {/* Logout Button */}
+  <div className="justify-center mt-4 z-10">
+    <LogoutButton />
+  </div>
+</div>
+
 
         {/* Recipes Section */}
         <div
-          className="flex-1 bg-garden rounded-xl shadow-lg w-[500px]"
+          className="flex-1 bg-garden sm:p-8 w-full max-w-sm sm:max-w-md md:w-1/3 rounded-xl shadow-lg "
           style={{ height: "400px" }}
         >
           <h3 className="text-3xl font-bold text-center text-cream mt-6 mb-4">
@@ -110,7 +151,7 @@ const ProfilePage = ({ user }) => {
               {recipes.map((recipe, index) => (
                 <div
                   key={`${recipe.id}-${index}`}
-                  className="bg-cream text-gray p-20 mt-12 rounded-lg shadow-md hover:shadow-lg transition"
+                  className="bg-cream relative text-gray p-20 mt-6  rounded-lg shadow-md hover:shadow-lg transition"
                   style={{
                     width: "200px",
                     margin: "20 auto",
@@ -126,7 +167,7 @@ const ProfilePage = ({ user }) => {
               ))}
             </SliderComponent>
           ) : (
-            <p className="text-center text-white">No saved recipes yet. Let's start cooking!</p>
+            <p className="text-center mt-4 text-cream">No saved recipes yet. Let's start cooking!</p>
           )}
         </div>
       </div>
@@ -134,10 +175,12 @@ const ProfilePage = ({ user }) => {
 
       {/*Selected Recipe Modal */}
 
-      {selectedRecipe && (
+   {selectedRecipe && (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div className="relative bg-white p-6 shadow-lg max-w-lg w-full max-h-[80vh] overflow-y-auto rounded-lg">
-      {/* Close Button (X) */}
+    <div
+      className="relative bg-white p-6 shadow-lg max-w-lg w-full max-h-[80vh] overflow-y-auto rounded-lg touch-auto"
+    >
+      {/* Close Button */}
       <button
         onClick={handleCloseModal}
         className="absolute top-2 right-2 text-gray-500 hover:text-black transition text-xl font-bold"
@@ -193,6 +236,7 @@ const ProfilePage = ({ user }) => {
     </div>
   </div>
 )}
+
 
     </div>
   );
