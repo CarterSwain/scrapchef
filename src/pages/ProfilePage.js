@@ -160,7 +160,7 @@ const ProfilePage = ({ user }) => {
                   onClick={() => setSelectedRecipe(recipe)}
                 >
                   <h4 className="text-lg font-bold text-center">
-                    {recipe.name.replace(/^Recipe:\s*/, "")}
+                    {recipe.name.replace(/^Recipe:|Recipe Name:|Recipe Title:|Title:|\s*/, "")}
                   </h4>
                   <p className="text-sm text-gray-700">{recipe.ingredients}</p>
                 </div>
@@ -191,7 +191,7 @@ const ProfilePage = ({ user }) => {
 
       {/* Modal Content */}
       <h3 className="text-3xl font-bold mb-4 text-center">
-        {selectedRecipe.name.replace(/^Recipe:\s*/, "")}
+        {selectedRecipe.name.replace(/^Recipe:|Recipe Name:|Recipe Title:|Title:\s*/, "")}
       </h3>
       <div className="text-gray-700">
         {selectedRecipe.details

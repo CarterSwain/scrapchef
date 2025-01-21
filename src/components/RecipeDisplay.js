@@ -1,5 +1,6 @@
 import React from "react";
 import SaveRecipeButton from "./SaveRecipeButton.js";
+import PrintRecipeButton from "./PrintRecipeButton.js";
 import AnimationWebM from "../assets/Animation - 1737322300801.webm";
 
 
@@ -49,6 +50,7 @@ const RecipeDisplay = ({ recipe, loading, error, userId, onClose }) => {
               <p className="text-lg leading-relaxed text-gray-800 whitespace-pre-wrap">
                 {recipe.recipeDetails}
               </p>
+              <PrintRecipeButton userId={userId} recipe={recipe}/>
               <SaveRecipeButton userId={userId} recipe={recipe} />
             </>
           )}

@@ -42,7 +42,7 @@ const SaveRecipeButton = ({ userId, recipe }) => {
         className={`px-4 py-2 rounded-md text-white font-semibold shadow-md ${
           loading
             ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-blue-500 hover:bg-blue-600 transition'
+            : 'bg-blue-500 hover:bg-garden transition'
         }`}
       >
         {loading ? 'Saving...' : 'Save Recipe'}
