@@ -14,15 +14,31 @@ html, body {
 
 body {
   margin: 0;
-  font-family: 'Poppins', sans-serif; /* Default font for the app */
+  font-family: 'Poppins', sans-serif; 
   font-weight: 500;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-image: url('/src/assets/ScrapChefBG2.png');
-  background-size: cover; /* Ensure the image covers the entire screen */
-  background-repeat: no-repeat; /* Prevent tiling */
-  background-attachment: fixed; /* Keep the background fixed during scrolling */
-  background-position: center; /* Center the background image */
+  background-size: cover; 
+  background-repeat: no-repeat; 
+  background-attachment: fixed; 
+  background-position: center; 
+}
+
+@media (max-width: 768px) {
+  body {
+    background-image: url('/src/assets/ScrapChefTabletBG.png');
+    background-size: cover; 
+    background-position: center; 
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    background-image: url('/src/assets/ScrapChefMobileBG.png');
+    background-size: cover; 
+    background-position: center; 
+  }
 }
 
 h1, h2, h3 {

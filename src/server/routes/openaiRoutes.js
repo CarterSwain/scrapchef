@@ -22,14 +22,14 @@ router.post('/generate-recipe', async (req, res) => {
       messages: [
         {
           role: 'system',
-          content: 'You are a chef recipe assistant that generates recipes based on only the ingredients provided, and provides the recipe with a name.',
+          content: 'You are a strict chef recipe assistant. Your job is to create recipes that use ONLY the ingredients provided by the user. You cannot add any ingredients not explicitly mentioned by the user. Ensure the recipe is realistic, clear, and has a title.',
         },
         {
           role: 'user',
-          content: `Create a recipe using the following ingredients: ${ingredients.join(', ')}.`,
+          content: `Create a recipe using ONLY the following ingredients: ${ingredients.join(', ')}.`,
         },
       ],
-      temperature: 1,
+      temperature: 0.7,
       max_tokens: 500,
       top_p: 1,
       frequency_penalty: 0,

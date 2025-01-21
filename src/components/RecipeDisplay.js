@@ -43,7 +43,7 @@ const RecipeDisplay = ({ recipe, loading, error, userId, onClose }) => {
               </button>
       
               <h3 className="text-3xl font-extrabold text-green-700 mb-6 text-center capitalize">
-                {recipe.recipeName.replace(/^(Recipe Name:|Recipe:)\s*/, "")}
+                {recipe.recipeName.replace(/^(Recipe Name:|Recipe:|Recipe Title:|Title:)\s*/, "")}
               </h3>
       
               <p className="text-lg leading-relaxed text-gray-800 whitespace-pre-wrap">
