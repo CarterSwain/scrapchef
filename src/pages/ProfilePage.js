@@ -19,7 +19,6 @@ const SliderComponent = !!Slider.default ? Slider.default : Slider;
 const ProfilePage = ({ user }) => {
   const [recipes, setRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserRecipes = async () => {
@@ -140,7 +139,7 @@ const ProfilePage = ({ user }) => {
 
         {/* Recipes Section */}
         <div
-          className="flex-1 bg-garden sm:p-8 w-full max-w-sm sm:max-w-md md:w-1/3 rounded-xl shadow-lg "
+          className="flex-1 px-18 py-10 mb-6 bg-garden sm:p-8 w-full max-w-sm sm:max-w-md md:w-1/3 rounded-xl shadow-lg "
           style={{ height: "400px" }}
         >
           <h3 className="text-3xl font-bold text-center text-cream mt-6 mb-4">
@@ -151,7 +150,7 @@ const ProfilePage = ({ user }) => {
               {recipes.map((recipe, index) => (
                 <div
                   key={`${recipe.id}-${index}`}
-                  className="bg-cream relative text-gray p-20 mt-6  rounded-lg shadow-md hover:shadow-lg transition"
+                  className="bg-cream relative text-gray p-20 mt-6 rounded-lg shadow-md hover:shadow-lg transition"
                   style={{
                     width: "200px",
                     margin: "20 auto",
@@ -167,7 +166,7 @@ const ProfilePage = ({ user }) => {
               ))}
             </SliderComponent>
           ) : (
-            <p className="text-center mt-4 text-cream">No saved recipes yet. Let's start cooking!</p>
+            <p className="text-center mt-4 p-12 text-cream">No saved recipes yet. Let's start cooking!</p>
           )}
         </div>
       </div>
